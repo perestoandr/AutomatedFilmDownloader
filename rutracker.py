@@ -3,10 +3,8 @@ import cookielib
 import urllib
 import urllib2
 import os
-
-import subprocess
-
 from environment import environment
+from automatic_torrent_start import run_qbittorrent
 
 
 class AlreadyDownloaded(Exception):
@@ -76,13 +74,8 @@ class RuTrackerAgent:
         return filename_path
 
 
-def run_qbittorrent(torrent_files_list):
-    command_string = environment.get('qBittorrent_location') + ' --no-splash '
-    command_string += " ".join(torrent_files_list)
-    return subprocess.call(command_string)
-
-
 if __name__ == '__main__':
     a = RuTrackerAgent()
-    a.download_torrent("The Man from UNCLE", 't=5108226', True)
-    run_qbittorrent(['T:\Downloads\TorrentFiles\TheManfromUNCLE.torrent'])
+    file_list = list()
+    file_list.append(a.download_torrent("The Man from UNCLE", 't=5108226', True))
+    run_qbittorrent(file_list)
