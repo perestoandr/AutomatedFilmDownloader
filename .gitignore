@@ -42,7 +42,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .idea/workspace.xml
-*.xml
 .idea/workspace.xml
 environment.pyc
 *.pyc
