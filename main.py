@@ -1,5 +1,7 @@
 # coding: windows-1251
 from film import Film, Feed
+from rutracker import RuTrackerAgent
+from automatic_torrent_start import run_qbittorrent
 import feedparser
 from environment import environment
 
