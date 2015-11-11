@@ -1,17 +1,14 @@
 environment = {
-    'qBittorrent_location': '"T:\Program Files\qBittorrent\qbittorrent.exe"',
-    'downloaded_torrents_location': 'T:\Downloads\TorrentFiles\\',
-    'downloaded_films_location': 'T:\Video\\',
-    'rutracker_login': 'DumbAssEr',
-    'rutracker_password_base64': 'eGJET0I=',
+    'qBittorrent_location': '',
+    'downloaded_torrents_location': '',
+    'downloaded_films_location': '',
+    'rutracker_login': '',
+    'rutracker_password_base64': '',
     'downloaded_films_list_file': 'processed_items.txt',
 
-    'twitter_consumer_key': "",
-    'twitter_consumer_secret': "",
-    'twitter_access_key': "",
-    'twitter_access_secret': "",
-    'twitter_screen_name': '',
+    'dropbox_folder_path': '',
+    'dropbox_OAuth2_key': '',
+    'dropbox_app_key': '',
+    'dropbox_app_secret': ''
 
-    'bitly_login': '',
-    'bitly_token': ''
 }
