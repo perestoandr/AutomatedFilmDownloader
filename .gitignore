@@ -47,3 +47,4 @@ environment.pyc
 *.pyc
 *.xml
 .idea/workspace.xml
+environment_local.py
