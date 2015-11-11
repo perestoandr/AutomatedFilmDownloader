@@ -3,8 +3,9 @@ from film import Film, Feed
 from rutracker import RuTrackerAgent
 from automatic_torrent_start import run_qbittorrent
 import feedparser
-from environment import environment
 
+
+# TODO: Add Rutracker agent, Add dropbox "database" feature
 if __name__ == '__main__':
     l = Feed('Latest movies', lambda title: 'BDRip'.lower() in title.lower() and \
                                             ('720p'.lower() in title.lower() or '1080p'.lower() in title.lower()),
