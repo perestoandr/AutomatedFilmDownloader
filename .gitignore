@@ -48,3 +48,4 @@ environment.pyc
 *.xml
 .idea/workspace.xml
 environment_local.py
+environment.py
