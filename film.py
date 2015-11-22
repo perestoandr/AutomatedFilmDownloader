@@ -70,8 +70,8 @@ class Film:
             director = match.group(0)[2:-1].strip()
         else:
             director = 'Ronald Reygan'
-            print 'Could not parse director!!!'
-            print rss_entry.title
+            print 'Could not parse director for', self.title, '/', self.rus_title
+            # print rss_entry.title
         return director
 
     def __str__(self):
@@ -98,8 +98,8 @@ class Film:
                                     x.get('title_description').lower().find(self.director.lower()) >= 0]
 
         if len(descriptionArray) == 0:
-            print 'NO MATCHES FOR ' + self.__str__()
-            imdbID = None
+            print 'NO MATCHES FOR ' + self.title
+            imdbID = ''
             return imdbID
 
         try:
@@ -114,7 +114,7 @@ class Film:
         IMDBvotes = 0
         IMDBrating = 0.0
         try:
-            omdbRequest = requests.get("http://www.omdbapi.com/?i=" + self.IMDBid)
+            omdbRequest = requests.get('http://www.omdbapi.com/?i=' + self.IMDBid)
             omdbDetails = json.loads(omdbRequest.content)
             try:
                 IMDBvotes = int(filter(lambda x: x.isdigit(), omdbDetails.get('imdbVotes')))
