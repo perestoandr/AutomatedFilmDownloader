@@ -42,5 +42,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .idea/*.xml
+*.json
 *.pyc
 environment.py
