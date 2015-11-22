@@ -28,6 +28,35 @@ def download(dbx_obj, _filename_):
     return data
 
 
+def upload_data(dbx_obj, data, filename_path, overwrite=False):
+    """
+    Upload a data.
+    :param dbx_obj: dropbox object
+    :param data: object to upload
+    :param filename_path: path in dropbox system
+    :param overwrite: parameter to overwrite file if it exists
+    :return: Return the request response, or None in case of error.
+    """
+    path = '/%s' % filename_path
+    while '//' in path:
+        path = path.replace('//', '/')
+    print path
+    mode = (dropbox.files.WriteMode.overwrite
+            if overwrite
+            else dropbox.files.WriteMode.add)
+
+    with stopwatch('upload %d bytes' % len(data)):
+        try:
+            res = dbx_obj.files_upload(
+                data, path, mode,
+                mute=True)
+        except dropbox.exceptions.ApiError as err:
+            print('*** API error', err)
+            return None
+    print 'uploaded as', res.name.encode('utf8')
+    return res
+
+
 def upload(dbx_obj, localfile_path, filename_path, overwrite=False):
     """
     Upload a file.
@@ -86,3 +115,4 @@ if __name__ == '__main__':
     with open(file_path + filename, 'w') as f:
         f.write(data)
         f.close()
+    upload_data(dbx, data, 'from_object_' + filename, overwrite=True)
