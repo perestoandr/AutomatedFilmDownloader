@@ -1,8 +1,6 @@
 import json
 import db_updater as db
 
-db_filename = 'film_base.json'
-
 
 def new_empty_db(dbx_obj, filename):
     clear_data = {'total': 0, 'records': []}
