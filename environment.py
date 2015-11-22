@@ -9,6 +9,6 @@ environment = {
     'dropbox_folder_path': '/home/perestoandr/Dropbox/Apps/RutrackerFilmLoader/',
     'dropbox_OAuth2_key': 'Qk4063Oqj1sAAAAAAAAniReH_A34nzn7tdNoFxcHbCh-Cix1zJ0C8_Yo6SXUL6qP',
     'dropbox_app_key': 'qmn544icjafj08x',
-    'dropbox_app_secret': 'jetm85x0pvjr0fi'
-
+    'dropbox_app_secret': 'jetm85x0pvjr0fi',
+    '': ''
 }
