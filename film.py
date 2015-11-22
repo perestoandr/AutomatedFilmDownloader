@@ -11,21 +11,17 @@ class Film:
     # def __init__(self, rss_entry,feed):
     def __init__(self, rss_entry):
         # print rssEntry
-        # parse film native title
         self.title = self.parse_title(rss_entry)
-        # parse film russian title
         self.rus_title = self.parse_rus_title(rss_entry)
-        # parse film year release
         self.year = self.parse_year(rss_entry)
-        # parse film director
         self.director = self.parse_director(rss_entry)
         self.size = self.parse_size(rss_entry)
         self.topicId = rss_entry.link[len('http://rutracker.org/forum/viewtopic.php?'):]
         self.topicURL = rss_entry.link
-        self.KPid = self.loadKPid()
         self.IMDBid = self.loadIMDBid()
         self.IMDBrating, self.IMDBvotes = self.loadIMDBRating()
-        self.KPrating, self.KPvotes = self.loadKPRating()
+        # self.KPid = self.loadKPid()
+        # self.KPrating, self.KPvotes = self.loadKPRating()
         # self.rssFeed = feed
 
     def parse_size(self, rss_entry):
@@ -85,7 +81,6 @@ class Film:
         return result.__str__()
 
     def loadIMDBid(self):
-        imdbID = None
         imdbRequest = requests.get('http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=' + self.title)
         imdbDetails = json.loads(imdbRequest.content)
         descriptionArray = []
@@ -136,7 +131,6 @@ class Film:
             IMDBrating = 0.0
             IMDBvotes = 0
             print "Unexpected error:", sys.exc_info()
-            return IMDBrating, IMDBvotes
 
         return IMDBrating, IMDBvotes
 
@@ -253,7 +247,7 @@ def get_kpTop250_film_list():
                 self.film_local_names.append(data)
                 self.found_local_name = False
 
-    logger = logging.getLogger('smogbot')
+    logger = logging.getLogger('kinobot')
     h = logging.StreamHandler(sys.stdout)
     h.setLevel(logging.DEBUG)
     logger.addHandler(h)
@@ -265,6 +259,5 @@ def get_kpTop250_film_list():
         return parser.film_id_list, parser.film_local_names
 
     except BaseException as err:
-        logging.getLogger('smogbot').warn(
+        logging.getLogger('kinobot').warn(
             'Could not get Kinopoisk top 250 ', exc_info=err)
-
