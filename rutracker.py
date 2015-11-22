@@ -3,7 +3,6 @@ import cookielib
 import urllib
 import urllib2
 import os
-# from environment_local import environment
 from environment import environment
 from automatic_torrent_start import run_qbittorrent
 
@@ -54,7 +53,7 @@ class RuTrackerAgent:
             print 'Authorized'
             self.authorized = True
 
-    def download_torrent(self, name, topicId, to_rewrite):
+    def download_torrent(self, name, topic_id, to_rewrite):
         filename = filter(lambda x: x.isalpha() or x.isdigit(), name)
         filename_path = environment.get('downloaded_torrents_location') + filename + '.torrent'
 
@@ -65,13 +64,12 @@ class RuTrackerAgent:
                 raise CannotAuthorize("RuTracker.org")
             with open(filename_path, 'wb') as torrent_file:
                 print 'Downloading ' + filename_path
-                web_file = self.opener.open('http://dl.rutracker.org/forum/dl.php?' + topicId, self.post_params)
+                web_file = self.opener.open('http://dl.rutracker.org/forum/dl.php?' + topic_id, self.post_params)
                 torrent_file.write(web_file.read())
                 torrent_file.close()
                 print 'Downloaded'
         else:
             raise AlreadyDownloaded(filename_path)
-
         return filename_path
 
 
