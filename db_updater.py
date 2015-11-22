@@ -24,7 +24,7 @@ def download(dbx_obj, _filename_):
             print('*** HTTP error', err)
             return None
     data = res.content
-    print len(data), 'bytes; md:', md
+    # print len(data), 'bytes; md:', md
     return data
 
 
@@ -40,7 +40,6 @@ def upload_data(dbx_obj, data, filename_path, overwrite=False):
     path = '/%s' % filename_path
     while '//' in path:
         path = path.replace('//', '/')
-    print path
     mode = (dropbox.files.WriteMode.overwrite
             if overwrite
             else dropbox.files.WriteMode.add)
@@ -69,7 +68,6 @@ def upload(dbx_obj, localfile_path, filename_path, overwrite=False):
     path = '/%s' % filename_path
     while '//' in path:
         path = path.replace('//', '/')
-    print path
     mode = (dropbox.files.WriteMode.overwrite
             if overwrite
             else dropbox.files.WriteMode.add)
@@ -104,15 +102,20 @@ def stopwatch(message):
         print('Total elapsed time for %s: %.3f' % (message, t1 - t0))
 
 
-if __name__ == '__main__':
+def set_up_dropbox():
     dbx = dropbox.Dropbox(environment.get('dropbox_OAuth2_key'))
     dbx.users_get_current_account()
-    dbx_path = environment.get('dropbox_folder_path')
-    file_path = environment.get('downloaded_torrents_location')
-    filename = 'TheManfromUNCLE.torrent'
-    upload(dbx, file_path + filename, filename)
-    data = download(dbx, filename)
-    with open(file_path + filename, 'w') as f:
-        f.write(data)
-        f.close()
-    upload_data(dbx, data, 'from_object_' + filename, overwrite=True)
+    return dbx
+
+
+# if __name__ == '__main__':
+#     dbx = set_up_dropbox()
+#     dbx_path = environment.get('dropbox_folder_path')
+#     file_path = environment.get('downloaded_torrents_location')
+#     filename = 'TheManfromUNCLE.torrent'
+#     upload(dbx, file_path + filename, filename)
+#     data = download(dbx, filename)
+#     with open(file_path + filename, 'w') as f:
+#         f.write(data)
+#         f.close()
+#     upload_data(dbx, data, 'from_object_' + filename, overwrite=True)
