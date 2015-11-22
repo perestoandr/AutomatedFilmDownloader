@@ -45,3 +45,4 @@ Temporary Items
 *.json
 *.pyc
 environment.py
+environment.pyc
