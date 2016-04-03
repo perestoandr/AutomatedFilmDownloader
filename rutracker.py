@@ -1,10 +1,15 @@
 import base64
-import cookielib
-import urllib
-import urllib2
+import http.cookiejar as cookielib
+import urllib.request as request
+import urllib.parse as urlparse
 import os
 from environment import environment
 from automatic_torrent_start import run_qbittorrent
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format=u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+                    level=logging.INFO)
 
 
 class AlreadyDownloaded(Exception):
@@ -25,14 +30,14 @@ class CannotAuthorize(Exception):
 
 class RuTrackerAgent:
     def __init__(self):
-        self.post_params = urllib.urlencode({
+        self.post_params = urlparse.urlencode({
             'login_username': environment.get('rutracker_login'),
             'login_password': base64.b64decode(environment.get('rutracker_password_base64')),
             'login': '%C2%F5%EE%E4'
         })
         self.cookie = self.__set_cookies__()
-        self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookie))
-        urllib2.install_opener(self.opener)
+        self.opener = request.build_opener(request.HTTPCookieProcessor(self.cookie))
+        request.install_opener(self.opener)
         self.authorized = False
 
     @staticmethod
@@ -48,14 +53,16 @@ class RuTrackerAgent:
 
     def __authorise__(self):
         if not self.authorized:
-            print 'Authorizing on RuTracker...'
-            self.opener.open('http://login.rutracker.org/forum/login.php', self.post_params)
-            print 'Authorized'
+            logging.info('Authorizing on RuTracker...')
+            self.opener.open(environment['rutracker_login_url'], self.post_params)
+            logging.info('Authorized')
+            logging.info('Authorized')
             self.authorized = True
 
     def download_torrent(self, name, topic_id, to_rewrite):
         filename = filter(lambda x: x.isalpha() or x.isdigit(), name)
         filename_path = environment.get('downloaded_torrents_location') + filename + '.torrent'
+        logging.debug('Downloading as: ' + filename_path)
 
         if (not os.path.exists(filename_path)) or to_rewrite:
             try:
@@ -63,13 +70,17 @@ class RuTrackerAgent:
             except:
                 raise CannotAuthorize("RuTracker.org")
             with open(filename_path, 'wb') as torrent_file:
-                print 'Downloading ' + filename_path
+                print
+                'Downloading ' + filename_path
                 web_file = self.opener.open('http://dl.rutracker.org/forum/dl.php?' + topic_id, self.post_params)
                 torrent_file.write(web_file.read())
                 torrent_file.close()
-                print 'Downloaded'
+                print
+                'Downloaded'
         else:
+            logging.info('File ' + filename_path + ' already exists')
             raise AlreadyDownloaded(filename_path)
+        logging.info('Downloaded as: ' + filename_path)
         return filename_path
 
 

@@ -1,5 +1,10 @@
 import json
 import db_updater as db
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format=u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+                    level=logging.INFO)
 
 
 def new_empty_db(dbx_obj, filename):
@@ -25,10 +30,10 @@ if __name__ == '__main__':
     dbx = db.set_up_dropbox()
     name = 'data.json'
     new_empty_db(dbx, name)
-    print read_from_db(dbx, name)
+    logging.info(read_from_db(dbx, name))
     add_to_db(dbx, {'name': name, 'test_data': 'not empty'}, name)
-    print read_from_db(dbx, name)
+    logging.info(read_from_db(dbx, name))
     add_to_db(dbx, {'name': name + ', again', 'test_data': 'not empty, again'}, name)
-    print read_from_db(dbx, name)
+    logging.info(read_from_db(dbx, name))
     add_to_db(dbx, {'name': name + ', again', 'test_data': ''}, name)
-    print read_from_db(dbx, name)
+    logging.info(read_from_db(dbx, name))

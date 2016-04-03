@@ -6,6 +6,11 @@ import time
 from dropbox.files import FileMetadata, FolderMetadata
 from dropbox.exceptions import HttpError
 from environment import environment
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format=u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+                    level=logging.INFO)
 
 
 def download(dbx_obj, _filename_):
@@ -21,7 +26,7 @@ def download(dbx_obj, _filename_):
         try:
             md, res = dbx_obj.files_download(path)
         except HttpError as err:
-            print('*** HTTP error', err)
+            logging.error('HTTP error: ' + err.__str__())
             return None
     data = res.content
     # print len(data), 'bytes; md:', md
@@ -50,9 +55,10 @@ def upload_data(dbx_obj, data, filename_path, overwrite=False):
                 data, path, mode,
                 mute=True)
         except dropbox.exceptions.ApiError as err:
-            print('*** API error', err)
+            logging.error('API error: ' + err.__str__())
             return None
-    print 'uploaded as', res.name.encode('utf8')
+    log_msg = 'uploaded as ' + res.name.encode('utf8')
+    logging.info(log_msg)
     return res
 
 
@@ -81,9 +87,10 @@ def upload(dbx_obj, localfile_path, filename_path, overwrite=False):
                 client_modified=datetime.datetime(*time.gmtime(mtime)[:6]),
                 mute=True)
         except dropbox.exceptions.ApiError as err:
-            print('*** API error', err)
+            logging.error('API error: ' + err.__str__())
             return None
-    print 'uploaded as', res.name.encode('utf8')
+    log_msg = 'uploaded as ' + res.name.encode('utf8')
+    logging.info(log_msg)
     return res
 
 
@@ -99,14 +106,14 @@ def stopwatch(message):
         yield
     finally:
         t1 = time.time()
-        print('Total elapsed time for %s: %.3f' % (message, t1 - t0))
+        log_msg = ('Total elapsed time for %s: %.3f' % (message, t1 - t0))
+        logging.info(log_msg)
 
 
 def set_up_dropbox():
     dbx = dropbox.Dropbox(environment.get('dropbox_OAuth2_key'))
     dbx.users_get_current_account()
     return dbx
-
 
 # if __name__ == '__main__':
 #     dbx = set_up_dropbox()
